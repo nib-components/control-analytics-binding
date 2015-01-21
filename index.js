@@ -12,6 +12,11 @@ module.exports = function(options) {
 
     var gaCategory  = options.category || control.inputView.el.getAttribute('data-analytics-category');
     var gaLabel     = options.label || control.inputView.el.getAttribute('data-analytics-label');
+    var gaIgnore    = control.inputView.el.getAttribute('data-analytics-ignore') !== null;
+
+    if (gaIgnore) {
+      return;
+    }
 
     control.on('validate', function(valid) {
       ga.trackEvent({

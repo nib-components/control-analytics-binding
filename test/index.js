@@ -18,15 +18,17 @@ window.ga = function(cmd, type, category, action, label, value) {
  * @param   {Object}  options
  * @param   {string}  options.category
  * @param   {string}  options.label
+ * @param   {string}  options.ignoreAttr
  * @returns {ControlPresenter}
  */
 function createControl(options) {
+  options = options || {};
 
   var element = document.createElement('div');
   element.innerHTML =
     '<label class="js-label">' +
     ' My control:' +
-    ' <input class="js-input" data-analytics-category="Test Controls" data-analytics-label="My Control"/>' +
+    ' <input class="js-input" data-analytics-category="Test Controls" data-analytics-label="My Control"'+(options.ignoreAttr ? 'data-analytics-ignore' : '')+'/>' +
     '</label>' +
     '<p class="js-feedback-message"></p>'
   ;
@@ -45,6 +47,10 @@ function createControl(options) {
 }
 
 describe('control-analytics-binding', function() {
+
+  beforeEach(function() {
+    lastGaEvent = {};
+  });
 
   it('it should emit an event with an action of "Valid"', function(done) {
     createControl()
@@ -102,6 +108,16 @@ describe('control-analytics-binding', function() {
     createControl({label: 'My Other Control'})
       .on('validate', function() {
         assert.equal(lastGaEvent.label, 'My Other Control');
+        done();
+      })
+      .validate()
+    ;
+  });
+
+  it('it should not emit an event when I have the ignore attribute in markup', function(done) {
+    createControl({ignoreAttr: true})
+      .on('validate', function() {
+        assert.equal(typeof(lastGaEvent.label), 'undefined');
         done();
       })
       .validate()
