@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Control: Analytics Binding</title>
+</head>
+<body>
+
+    <div class="js-control">
+        <label class="js-label">
+            Control:
+            <input class="js-input"/>
+        </label>
+        <p class="js-feedback-message"></p>
+    </div>
+
+    <script src="../build/build.js"></script>
+    <script>
+
+        var required    = require('validation-methods').required;
+        var plugin      = require('control-analytics-binding');
+        var control     = require('control').create({
+            el: document.querySelector('.js-control'),
+            name: 'name',
+            validators: [
+                [required, 'Oops! Please enter a value!']
+            ]
+        }).use(plugin());
+
+    </script>
+</body>
+</html>
