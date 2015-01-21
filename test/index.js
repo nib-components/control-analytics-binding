@@ -117,7 +117,31 @@ describe('control-analytics-binding', function() {
   it('it should not emit an event when I have the ignore attribute in markup', function(done) {
     createControl({ignoreAttr: true})
       .on('validate', function() {
+        assert.equal(typeof(lastGaEvent.category), 'undefined');
+        assert.equal(typeof(lastGaEvent.action), 'undefined');
         assert.equal(typeof(lastGaEvent.label), 'undefined');
+        done();
+      })
+      .validate()
+    ;
+  });
+
+  it('it should replace template values in the category', function(done) {
+    createControl({category: 'Test Controls - "{{value}}"'})
+      .setValue('Hello Kitty!')
+      .on('validate', function() {
+        assert.equal(lastGaEvent.category, 'Test Controls - "Hello Kitty!"');
+        done();
+      })
+      .validate()
+    ;
+  });
+
+  it('it should replace template values in the label', function(done) {
+    createControl({label: 'My control - "{{value}}"'})
+      .setValue('Hello Kitty!')
+      .on('validate', function() {
+        assert.equal(lastGaEvent.label, 'My control - "Hello Kitty!"');
         done();
       })
       .validate()

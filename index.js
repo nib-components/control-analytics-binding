@@ -18,12 +18,18 @@ module.exports = function(options) {
       return;
     }
 
-    control.on('validate', function(valid) {
+    control.on('validate', function(valid, value) {
+
+      //replace template values
+      gaCategory  = gaCategory.replace('{{value}}', value);
+      gaLabel     = gaLabel.replace('{{value}}', value);
+
       ga.trackEvent({
         category: gaCategory,
         action:   valid ? 'Valid' : 'Invalid',
         label:    gaLabel
       });
+
     });
 
   };
