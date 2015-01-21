@@ -4,8 +4,7 @@ A plugin to emit analytics events after a [control](https://github.com/nib-healt
 
 ## Installation
 
-    component install control-analytics-binding
-
+    component install nib-components/control-analytics-binding
 
 ## Usage
 
