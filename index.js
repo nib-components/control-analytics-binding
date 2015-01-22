@@ -42,6 +42,10 @@ module.exports = function(options) {
       gaCategory  = gaCategory.replace('{{value}}', value);
       gaLabel     = gaLabel.replace('{{value}}', value);
 
+      if (gaCategory == '' || gaLabel == '') {
+        throw new Error('Category or label not set on '+control.getName());
+      }
+
       ga.trackEvent({
         category: gaCategory,
         action:   valid ? 'Valid' : 'Invalid',
