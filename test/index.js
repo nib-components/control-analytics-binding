@@ -25,10 +25,13 @@ function createControl(options) {
   options = options || {};
 
   var element = document.createElement('div');
+  element.setAttribute('data-analytics-category', 'Test Controls');
+  element.setAttribute('data-analytics-label', 'My Control');
+  if (options.ignoreAttr) element.setAttribute('data-analytics-ignore', 'Test Controls');
   element.innerHTML =
     '<label class="js-label">' +
-    ' My control:' +
-    ' <input class="js-input" data-analytics-category="Test Controls" data-analytics-label="My Control"'+(options.ignoreAttr ? 'data-analytics-ignore' : '')+'/>' +
+    '  My control:' +
+    '  <input class="js-input"/>' +
     '</label>' +
     '<p class="js-feedback-message"></p>'
   ;
@@ -52,62 +55,12 @@ describe('control-analytics-binding', function() {
     lastGaEvent = {};
   });
 
-  it('it should emit an event with an action of "Valid"', function(done) {
-    createControl()
-      .setValue('foobar')
-      .on('validate', function() {
-        assert.equal(lastGaEvent.action, 'Valid');
-        done();
-      })
-      .validate()
-    ;
-  });
-
-  it('it should emit an event with an action of "Invalid"', function(done) {
-    createControl()
-      .setValue('')
-      .on('validate', function() {
-        assert.equal(lastGaEvent.action, 'Invalid');
-        done();
-      })
-      .validate()
-    ;
-  });
-
-  it('it should emit an event with a category of "Test Controls" when I set a category in the HTML', function(done) {
+  it('it should not emit an event when I haven\'t  blurred the control', function(done) {
     createControl()
       .on('validate', function() {
-        assert.equal(lastGaEvent.category, 'Test Controls');
-        done();
-      })
-      .validate()
-    ;
-  });
-
-  it('it should emit an event with a category of "Other Test Controls" when I pass a category to the plugin', function(done) {
-    createControl({category: 'Other Test Controls'})
-      .on('validate', function() {
-        assert.equal(lastGaEvent.category, 'Other Test Controls');
-        done();
-      })
-      .validate()
-    ;
-  });
-
-  it('it should emit an event with a label of "My Control" when I set a label in the HTML', function(done) {
-    createControl()
-      .on('validate', function() {
-        assert.equal(lastGaEvent.label, 'My Control');
-        done();
-      })
-      .validate()
-    ;
-  });
-
-  it('it should emit an event with a label of "My Other Control" when I pass a label to the plugin', function(done) {
-    createControl({label: 'My Other Control'})
-      .on('validate', function() {
-        assert.equal(lastGaEvent.label, 'My Other Control');
+        assert.equal(typeof(lastGaEvent.category), 'undefined');
+        assert.equal(typeof(lastGaEvent.action), 'undefined');
+        assert.equal(typeof(lastGaEvent.label), 'undefined');
         done();
       })
       .validate()
@@ -122,6 +75,75 @@ describe('control-analytics-binding', function() {
         assert.equal(typeof(lastGaEvent.label), 'undefined');
         done();
       })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with an action of "Valid"', function(done) {
+    createControl()
+      .setValue('foobar')
+      .on('validate', function() {
+        assert.equal(lastGaEvent.action, 'Valid');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with an action of "Invalid"', function(done) {
+    createControl()
+      .setValue('')
+      .on('validate', function() {
+        assert.equal(lastGaEvent.action, 'Invalid');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with a category of "Test Controls" when I set a category in the HTML', function(done) {
+    createControl()
+      .on('validate', function() {
+        assert.equal(lastGaEvent.category, 'Test Controls');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with a category of "Other Test Controls" when I pass a category to the plugin', function(done) {
+    createControl({category: 'Other Test Controls'})
+      .on('validate', function() {
+        assert.equal(lastGaEvent.category, 'Other Test Controls');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with a label of "My Control" when I set a label in the HTML', function(done) {
+    createControl()
+      .on('validate', function() {
+        assert.equal(lastGaEvent.label, 'My Control');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with a label of "My Other Control" when I pass a label to the plugin', function(done) {
+    createControl({label: 'My Other Control'})
+      .on('validate', function() {
+        assert.equal(lastGaEvent.label, 'My Other Control');
+        done();
+      })
+      .emit('blur')
       .validate()
     ;
   });
@@ -133,6 +155,7 @@ describe('control-analytics-binding', function() {
         assert.equal(lastGaEvent.category, 'Test Controls - "Hello Kitty!"');
         done();
       })
+      .emit('blur')
       .validate()
     ;
   });
@@ -144,6 +167,7 @@ describe('control-analytics-binding', function() {
         assert.equal(lastGaEvent.label, 'My control - "Hello Kitty!"');
         done();
       })
+      .emit('blur')
       .validate()
     ;
   });

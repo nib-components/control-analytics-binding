@@ -6,18 +6,18 @@
 </head>
 <body>
 
-    <div class="js-control-1">
+    <div class="js-control-1" data-analytics-category="First Name" data-analytics-label="Policy Holder">
         <label class="js-label">
             First name:
-            <input class="js-input" data-analytics-category="First Name" data-analytics-label="Policy Holder"/>
+            <input class="js-input"/>
         </label>
         <p class="js-feedback-message"></p>
     </div>
 
-    <div class="js-control-2">
+    <div class="js-control-2" data-analytics-category="Payment Frequency" data-analytics-label="{{value}}">
         <label class="js-label">
             Payment frequency:
-            <select class="js-input" data-analytics-category="Payment Frequency" id="payment-frequency-input">
+            <select class="js-input" id="payment-frequency-input">
                 <option value="Weekly">
                 Weekly
                 </option>
@@ -41,15 +41,15 @@
         <p class="js-feedback-message"></p>
     </div>
 
-    <div class="js-control-3">
+    <div class="js-control-3" data-analytics-category="Are you covered by this policy?" data-analytics-label="{{value}}">
         <label class="js-label">
             Radio:
             <div class="js-input"><label class="js-option-label">
-                <input class="js-option-input" data-analytics-category="Are you covered by this policy?" data-analytics-label="Yes" type="radio" name="covered" value="True">
+                <input class="js-option-input" type="radio" name="covered" value="True">
                 Yes
             </label>
                 <label class="js-option-label">
-                    <input class="js-option-input" data-analytics-category="Are you covered by this policy?" data-analytics-label="No" type="radio" name="covered" value="False">
+                    <input class="js-option-input" type="radio" name="covered" value="False">
                     No
                 </label>
             </div>
@@ -57,15 +57,17 @@
         <p class="js-feedback-message"></p>
     </div>
 
+    <button class="js-validate">Validate</button>
+
     <script src="../build/build.js"></script>
     <script>
 
         window.ga = function() {console.log(arguments);};
 
-        var required    = require('validation-methods').required;
-        var plugin      = require('control-analytics-binding');
+        var plugin = require('control-analytics-binding');
+        var required = require('validation-methods').required;
 
-        var control     = require('control').create({
+        var control1 = require('control').create({
             el: document.querySelector('.js-control-1'),
             name: 'first-name',
             validators: [
@@ -73,7 +75,7 @@
             ]
         }).use(plugin());
 
-        var control     = require('control').create({
+        var control2 = require('control').create({
             el: document.querySelector('.js-control-2'),
             name: 'payment-frequency',
             event: ['change', 'blur'],
@@ -82,7 +84,7 @@
             ]
         }).use(plugin());
 
-        var control     = require('control').create({
+        var control3 = require('control').create({
             el: document.querySelector('.js-control-3'),
             name: 'are-you-covered',
             type: 'option',
@@ -91,6 +93,12 @@
                 [required, 'Oops! Please enter a value!']
             ]
         }).use(plugin());
+
+        document.querySelector('.js-validate').addEventListener('click', function() {
+            control1.validate();
+            control2.validate();
+            control3.validate();
+        });
 
     </script>
 </body>

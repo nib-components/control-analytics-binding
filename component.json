@@ -7,7 +7,7 @@
   "development": {
     "dependencies": {
       "component/assert": "*",
-      "nib-health-funds/control": "~2.1.3",
+      "nib-health-funds/control": "~2.2.1",
       "nib-components/validation-methods": "0.0.8"
     }
   }

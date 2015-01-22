@@ -2,6 +2,8 @@
 
 A plugin to emit analytics events after a [control](https://github.com/nib-health-funds/control) is validated.
 
+- This component only sends the analytics event after a `validate` event has been triggered on the control by a `blur` event i.e. when the user triggers validation by interacting with the field - if you're not triggering validation on blur than this component might not be applicable or need some refactoring
+
 ## Installation
 
     component install nib-components/control-analytics-binding
@@ -10,10 +12,10 @@ A plugin to emit analytics events after a [control](https://github.com/nib-healt
 
 HTML:
 
-    <div class="js-control">
+    <div class="js-control" data-analytics-category="Test Controls" data-analytics-label="My Control - {{value}}"> <!-- including the value is optional --!>
         <label class="js-label">
             My control:
-            <input class="js-input" data-analytics-category="Test Controls" data-analytics-label="My Control"/>
+            <input class="js-input"/>
         </label>
         <p class="js-feedback-message"></p>
     </div>
