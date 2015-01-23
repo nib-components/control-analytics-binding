@@ -24,8 +24,14 @@ module.exports = function(options) {
       return;
     }
 
-    if (gaCategory == '' || gaLabel == '') {
-      throw new Error('Category or label not set on '+control.getName());
+    //check a category is specified
+    if (gaCategory == '') {
+      throw new Error('Category not set on control named "'+control.getName()+'"');
+    }
+
+    //check a label is specified
+    if (gaLabel == '') {
+      throw new Error('Label not set on control named "'+control.getName()+'"');
     }
 
     control.on('blur', function() {
