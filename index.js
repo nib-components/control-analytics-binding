@@ -31,7 +31,7 @@ module.exports = function(options) {
 
     //check a label is specified
     if (gaLabel == '') {
-      throw new Error('Label not set on control named "'+control.getName()+'"');
+      //throw new Error('Label not set on control named "'+control.getName()+'"');
     }
 
     control.on('blur', function() {
