@@ -24,6 +24,10 @@ module.exports = function(options) {
       return;
     }
 
+    if (gaCategory == '' || gaLabel == '') {
+      throw new Error('Category or label not set on '+control.getName());
+    }
+
     control.on('blur', function() {
       afterBlur = true;
     });
@@ -37,19 +41,12 @@ module.exports = function(options) {
       }
       afterBlur = false;
 
-      //replace template values
+      //send the event
       value = value || '<NO-VALUE>';
-      gaCategory  = gaCategory.replace('{{value}}', value);
-      gaLabel     = gaLabel.replace('{{value}}', value);
-
-      if (gaCategory == '' || gaLabel == '') {
-        throw new Error('Category or label not set on '+control.getName());
-      }
-
       ga.trackEvent({
-        category: gaCategory,
+        category: gaCategory.replace('{{value}}', value), //replace template value with actual value
         action:   valid ? 'Valid' : 'Invalid',
-        label:    gaLabel
+        label:    gaLabel.replace('{{value}}', value) //replace template value with actual value
       });
 
     });
