@@ -48,10 +48,11 @@ module.exports = function(options) {
       afterBlur = false;
 
       //send the event
-      value = value || '<NO-VALUE>';
+      var action  = value ? (valid ? 'Valid' : 'Invalid') : 'Empty';
+      value       = value || '<NO-VALUE>';
       ga.trackEvent({
         category: gaCategory.replace('{{value}}', value), //replace template value with actual value
-        action:   valid ? 'Valid' : 'Invalid',
+        action:   action,
         label:    gaLabel.replace('{{value}}', value) //replace template value with actual value
       });
 

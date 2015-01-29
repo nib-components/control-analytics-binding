@@ -71,7 +71,8 @@
             el: document.querySelector('.js-control-1'),
             name: 'first-name',
             validators: [
-                [required, 'Oops! Please enter a value!']
+                [required, 'Oops! Please enter a value!'],
+                [function(value) {return value.length>=8;}, 'I says NO! Gimme moar!']
             ]
         }).use(plugin());
 
