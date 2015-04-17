@@ -41,3 +41,7 @@ Analytics Data:
     - Category: Test Controls
     - Action:   Valid or Invalid
     - Label:    My Control
+
+## Testing
+
+    $ component test browser
