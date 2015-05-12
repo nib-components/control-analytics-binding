@@ -37,12 +37,14 @@ function createControl(options) {
   ;
 
   var required    = require('validation-methods').required;
+  var alphanumeric= require('validation-methods').alphanumeric;
   var plugin      = require('control-analytics-binding');
   var control     = require('control').create({
     el:         element,
     name:       'my-control',
     validators: [
-      [required, 'Oops! Please enter a value!']
+      [required, 'Oops! Please enter a value!'],
+      [alphanumeric, 'Oops! Must be alphanumeric!']
     ]
   }).use(plugin(options));
 
@@ -53,18 +55,6 @@ describe('control-analytics-binding', function() {
 
   beforeEach(function() {
     lastGaEvent = {};
-  });
-
-  it('it should not emit an event when I haven\'t  blurred the control', function(done) {
-    createControl()
-      .on('validate', function() {
-        assert.equal(typeof(lastGaEvent.category), 'undefined');
-        assert.equal(typeof(lastGaEvent.action), 'undefined');
-        assert.equal(typeof(lastGaEvent.label), 'undefined');
-        done();
-      })
-      .validate()
-    ;
   });
 
   it('it should not emit an event when I have the ignore attribute in markup', function(done) {
@@ -92,9 +82,21 @@ describe('control-analytics-binding', function() {
     ;
   });
 
-  it('it should emit an event with an action of "Invalid"', function(done) {
+  it('it should emit an event with an action of "Empty"', function(done) {
     createControl()
       .setValue('')
+      .on('validate', function() {
+        assert.equal(lastGaEvent.action, 'Empty');
+        done();
+      })
+      .emit('blur')
+      .validate()
+    ;
+  });
+
+  it('it should emit an event with an action of "Invalid"', function(done) {
+    createControl()
+      .setValue('#$%#')
       .on('validate', function() {
         assert.equal(lastGaEvent.action, 'Invalid');
         done();

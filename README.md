@@ -2,8 +2,6 @@
 
 A plugin to emit analytics events after a [control](https://github.com/nib-health-funds/control) is validated.
 
-- This component only sends the analytics event after a `validate` event has been triggered on the control by a `blur` event i.e. when the user triggers validation by interacting with the field - if you're not triggering validation on blur than this component might not be applicable or need some refactoring
-
 ## Installation
 
     component install nib-components/control-analytics-binding

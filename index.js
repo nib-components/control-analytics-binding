@@ -11,7 +11,6 @@ module.exports = function(options) {
   options = options || {};
 
   return function(control) {
-    var afterBlur = false;
 
     //get the event data
     var element = control.controlView.el;
@@ -34,18 +33,8 @@ module.exports = function(options) {
       //throw new Error('Label not set on control named "'+control.getName()+'"');
     }
 
-    control.on('blur', function() {
-      afterBlur = true;
-    });
-
     //track the event
     control.on('validate', function(valid, value) {
-
-      //only send the event to GA if the user triggered it i.e. after a blur
-      if (!afterBlur) {
-        return;
-      }
-      afterBlur = false;
 
       //send the event
       var action  = value ? (valid ? 'Valid' : 'Invalid') : 'Empty';
